@@ -27,17 +27,17 @@ var video_out  = document.getElementById("vid-box");
 function login(form) {
     user_name = form.username.value || "Anonymous";
     var phone = window.phone = PHONE({
-        number        : user_name, // listen on username line else Anonymous
+        number        : user_name, 
         publish_key   : 'pub-c-9e514dd2-5849-454e-b1bb-27c5ba33f436',
         subscribe_key : 'sub-c-93e957ac-4360-11e8-9967-869954283fb4',
-        datachannels  : true,  // Enable Data Channels
+        datachannels  : true,  
     }); 
     phone.ready(function(){ form.username.style.background="#55ff5b"; form.login_submit.hidden="true"; });
     phone.receive(function(session){
         session.connected(function(session) { video_hold.hidden=false; video_out.appendChild(session.video); });
         session.ended(function(session) { video_out.innerHTML=''; });
     });
-     // Prepare Data Channel
+    phone.datachannel(onDataReceived);
     return false;
 }
 function makeCall(form){
@@ -53,6 +53,28 @@ function end(){
 var game_board = document.getElementById("tic-tac-box");
 var user_name = "";
 var game_board = ticTacToe(game_board);
+
+game_board.onSquareClicked(
+    function(squareNum){  // Number of the box that was clicked
+        if (!window.phone) return;
+        var data = {square:squareNum, username:user_name};
+        window.phone.sendData(data);
+    }
+)
+function onDataReceived(msg){
+    var sqr_num = msg.square;
+    game_board.markBox(sqr_num);
+}
+function login(form) {
+    // Setup phone
+    // Ready and Receive Callbacks
+    ...
+    phone.datachannel(onDataReceived);
+    return false;
+}
+
+
+
 </script>
 
 </html>

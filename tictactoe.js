@@ -1,5 +1,4 @@
 function ticTacToe(box){
-	//declare global vars
 	var BOARD={};
 	var square_click_cb = function(){};
 	var painted;
@@ -13,12 +12,11 @@ function ticTacToe(box){
 	var w;
 	var y;
 	
-	//instantiate the arrays
+	
 	window.onload = function(){
 	    BOARD.clearBoard();
 	}
 	
-	//draw the board
 	BOARD.drawBoard = function(){
 	  for(var i=0; i<9; i++){
 	    var x = document.createElement("canvas");
@@ -46,14 +44,14 @@ function ticTacToe(box){
 	
 	BOARD.onSquareClicked = function(clickcb){ square_click_cb = clickcb; };
 	
-	//Game Methods
+	
 	function canvasClicked(canvasNumber, isOpponent){
 	    theCanvas = "square-"+canvasNumber;
 	    c = document.getElementById(theCanvas);
 	    cxt = c.getContext("2d");
 	    cxt.lineWidth = 15;
 	
-	    //draw X if box is empty
+	    
 	    if(painted[canvasNumber] == false){
 		    if (!isOpponent) square_click_cb(canvasNumber);
 	        if(turn%2==0){
@@ -95,7 +93,7 @@ function ticTacToe(box){
 	function checkForWinners(symbol){
 	    for(var a = 0; a < winningCombinations.length; a++){
 	        if(content[winningCombinations[a][0]] == symbol && content[winningCombinations[a][1]] == symbol && content[winningCombinations[a][2]] == symbol){
-	            alert(symbol + " won!");
+	            alert("Player using " + symbol + " won!");
 	            BOARD.clearBoard();
 	        }
 	    }
